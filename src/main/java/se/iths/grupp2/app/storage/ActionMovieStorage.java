@@ -7,6 +7,7 @@ import se.iths.grupp2.app.model.ActionMovie;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionMovieStorage implements MovieStorage<ActionMovie> {
@@ -27,7 +28,6 @@ public class ActionMovieStorage implements MovieStorage<ActionMovie> {
                 return;
             }
             List<ActionMovie> actionMovies = findAll();
-            IO.println("ActionMovies = " + actionMovies);
 
             actionMovies.add(actionMovie);
 
@@ -45,7 +45,7 @@ public class ActionMovieStorage implements MovieStorage<ActionMovie> {
             return actionMovies;
         }
         else {
-            return List.of();
+            return new ArrayList<>();
         }
     }
 
