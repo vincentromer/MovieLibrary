@@ -3,7 +3,6 @@ package se.iths.grupp2.app.storage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import se.iths.grupp2.app.model.DramaMovie;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,7 +27,7 @@ public class DramaMovieStorage implements MovieStorage<DramaMovie> {
         List<DramaMovie> dramaMovies = new ArrayList<>(findAll());
         dramaMovies.add(movie);
 
-        mapper.writeValue(file.toFile(), dramaMovies);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file.toFile(), dramaMovies);
 
     }
 
