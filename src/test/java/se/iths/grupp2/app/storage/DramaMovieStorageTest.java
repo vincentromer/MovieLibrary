@@ -3,9 +3,11 @@ package se.iths.grupp2.app.storage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import se.iths.grupp2.app.model.DramaMovie;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DramaMovieStorageTest {
@@ -16,24 +18,28 @@ public class DramaMovieStorageTest {
     @Test
     void saveAndFindMovie() throws IOException {
         Path file = tempDir.resolve("drama-movies.json");
-
+        String filmTitle = "The Shawshank Redemption";
         DramaMovieStorage storage = new DramaMovieStorage(file);
 
-        DramaMovie movie = new DramaMovie(1, "The Shawshank Redemption");
+        DramaMovie movie = new DramaMovie(1, filmTitle);
         storage.save(movie);
 
         DramaMovie foundMovie = storage.findById(1);
 
-        assertEquals("The Shawshank Redemption", foundMovie.getTitle());
+        assertEquals(filmTitle, foundMovie.getTitle());
     }
 
     @Test
     void saveDoesNotAllowDuplicateId() throws IOException {
         Path file = tempDir.resolve("duplicate-drama-movies.json");
+
+        String filmTitle = "The Shawshank Redemption";
+        String filmTitle2 = "Forrest Gump";
+
         DramaMovieStorage storage = new DramaMovieStorage(file);
 
-        DramaMovie movie1 = new DramaMovie(1, "The Shawshank Redemption");
-        DramaMovie movie2 = new DramaMovie(1, "Forrest Gump");
+        DramaMovie movie1 = new DramaMovie(1, filmTitle);
+        DramaMovie movie2 = new DramaMovie(1, filmTitle2);
 
         storage.save(movie1);
         storage.save(movie2);
@@ -41,7 +47,7 @@ public class DramaMovieStorageTest {
         List<DramaMovie> savedMovies = storage.findAll();
 
         assertEquals(1, savedMovies.size());
-        assertEquals("The Shawshank Redemption", savedMovies.get(0).getTitle());
+        assertEquals(filmTitle, savedMovies.get(0).getTitle());
     }
 
     @Test
@@ -57,7 +63,7 @@ public class DramaMovieStorageTest {
 
 
     @Test
-    void findByIDReturnsNullWhenMovieDoesNotExist()throws IOException{
+    void findByIDReturnsNullWhenMovieDoesNotExist() throws IOException {
 
         Path file = tempDir.resolve("missing-drama-movies.json");
         DramaMovieStorage storage = new DramaMovieStorage(file);
@@ -67,34 +73,40 @@ public class DramaMovieStorageTest {
         assertNull(foundMovie);
     }
 
-@Test
-    void findByIdReturnsNullWhenIdIsMissing() throws IOException{
+    @Test
+    void findByIdReturnsNullWhenIdIsMissing() throws IOException {
 
-    Path file = tempDir.resolve("missing-drama-movies.json");
-    DramaMovieStorage storage = new DramaMovieStorage(file);
+        Path file = tempDir.resolve("missing-drama-movies.json");
+        String filmTitle = "Forrest Gump";
 
-    DramaMovie movie1 = new DramaMovie(1, "Forrest Gump");
-    storage.save(movie1);
 
-    DramaMovie foundMovie = storage.findById(999);
+        DramaMovieStorage storage = new DramaMovieStorage(file);
 
-    assertNull(foundMovie);
-}
-@Test
-    void savedMovieCanBeReadByNewStorageInstance() throws IOException{
+        DramaMovie movie1 = new DramaMovie(1, filmTitle);
+        storage.save(movie1);
 
-    Path file = tempDir.resolve("persisted-drama-movies.json");
-    DramaMovieStorage storage = new DramaMovieStorage(file);
+        DramaMovie foundMovie = storage.findById(999);
 
-    DramaMovie movie1 = new DramaMovie(1, "Forrest Gump");
-    storage.save(movie1);
+        assertNull(foundMovie);
+    }
 
-    DramaMovieStorage newStorage = new DramaMovieStorage(file);
+    @Test
+    void savedMovieCanBeReadByNewStorageInstance() throws IOException {
 
-    DramaMovie foundMovie = newStorage.findById(1);
+        Path file = tempDir.resolve("persisted-drama-movies.json");
+        String filmTitle = "Forrest Gump";
 
-    assertEquals("Forrest Gump", foundMovie.getTitle());
-}
+        DramaMovieStorage storage = new DramaMovieStorage(file);
+
+        DramaMovie movie1 = new DramaMovie(1, filmTitle);
+        storage.save(movie1);
+
+        DramaMovieStorage newStorage = new DramaMovieStorage(file);
+
+        DramaMovie foundMovie = newStorage.findById(1);
+
+        assertEquals(filmTitle, foundMovie.getTitle());
+    }
 
 
 }
