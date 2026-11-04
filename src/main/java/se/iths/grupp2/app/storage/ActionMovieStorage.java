@@ -22,17 +22,15 @@ public class ActionMovieStorage implements MovieStorage<ActionMovie> {
 
     @Override
     public void save(ActionMovie actionMovie) throws IOException {
-        if (Files.exists(filePath)) {
-            boolean movieExists = findById(actionMovie.getId()) != null;
-            if (movieExists) {
-                return;
-            }
-            List<ActionMovie> actionMovies = findAll();
-
-            actionMovies.add(actionMovie);
-
-            mapper.writerWithDefaultPrettyPrinter().writeValue(filePath.toFile(), actionMovies);
+        boolean movieExists = findById(actionMovie.getId()) != null;
+        if (movieExists) {
+            return;
         }
+        List<ActionMovie> actionMovies = findAll();
+
+        actionMovies.add(actionMovie);
+
+        mapper.writerWithDefaultPrettyPrinter().writeValue(filePath.toFile(), actionMovies);
     }
 
     @Override
