@@ -12,6 +12,6 @@ public class ComedyMovie extends Movie {
 
     @Override
     public String category() {
-        return "Komedi";
+        return "Comedy";
     }
 }
