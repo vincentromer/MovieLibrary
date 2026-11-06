@@ -36,7 +36,7 @@ class ComedyMovieStorageTest {
         List<ComedyMovie> all = storage.findAll();
 
         assertEquals(1, all.size());
-        assertEquals("Superbad", all.get(0).getTitle());
+        assertEquals("Superbad", all.getFirst().getTitle());
     }
 
     @Test
