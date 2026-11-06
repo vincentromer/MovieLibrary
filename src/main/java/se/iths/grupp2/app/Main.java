@@ -1,6 +1,8 @@
 package se.iths.grupp2.app;
 
+import se.iths.grupp2.app.model.ActionMovie;
 import se.iths.grupp2.app.model.DramaMovie;
+import se.iths.grupp2.app.storage.ActionMovieStorage;
 import se.iths.grupp2.app.storage.DramaMovieStorage;
 import se.iths.grupp2.app.storage.MovieStorage;
 import java.io.IOException;
@@ -26,7 +28,23 @@ public class Main {
         DramaMovie movie5 = new DramaMovie(5,"Good Will Hunting");
         dramaMovieStorage.save(movie5);
 
+        // Action movies
+        MovieStorage<ActionMovie> actionMovieStorage = new ActionMovieStorage(Path.of("data", "action-movies.json"));
 
+        ActionMovie actionMovie1 = new ActionMovie(1, "Spider-Man 2");
+        actionMovieStorage.save(actionMovie1);
+
+        ActionMovie actionMovie2 = new ActionMovie(2, "Rush Hour");
+        actionMovieStorage.save(actionMovie2);
+
+        ActionMovie actionMovie3 = new ActionMovie(3, "The Avengers");
+        actionMovieStorage.save(actionMovie3);
+
+        ActionMovie actionMovie4 = new ActionMovie(4, "The Dark Knight");
+        actionMovieStorage.save(actionMovie4);
+
+        ActionMovie actionMovie5 = new ActionMovie(5, "Green Lantern");
+        actionMovieStorage.save(actionMovie5);
 
 
     }
