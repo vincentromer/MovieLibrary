@@ -11,22 +11,23 @@ import java.nio.file.Path;
 public class Main {
     static void main() throws IOException {
 
+        //Drama movies
         MovieStorage<DramaMovie> dramaMovieStorage = new DramaMovieStorage(Path.of("data","drama-movies.json"));
 
-        DramaMovie movie1 = new DramaMovie(1,"A Beautiful Mind");
-        dramaMovieStorage.save(movie1);
+        DramaMovie dramaMovie1 = new DramaMovie(1,"A Beautiful Mind");
+        dramaMovieStorage.save(dramaMovie1);
 
-        DramaMovie movie2 = new DramaMovie(2,"Dead Poets Society");
-        dramaMovieStorage.save(movie2);
+        DramaMovie dramaMovie2 = new DramaMovie(2,"Dead Poets Society");
+        dramaMovieStorage.save(dramaMovie2);
 
-        DramaMovie movie3 = new DramaMovie(3,"12 Years a Slave");
-        dramaMovieStorage.save(movie3);
+        DramaMovie dramaMovie3 = new DramaMovie(3,"12 Years a Slave");
+        dramaMovieStorage.save(dramaMovie3);
 
-        DramaMovie movie4 = new DramaMovie(4,"The Green Mile");
-        dramaMovieStorage.save(movie4);
+        DramaMovie dramaMovie4 = new DramaMovie(4,"The Green Mile");
+        dramaMovieStorage.save(dramaMovie4);
 
-        DramaMovie movie5 = new DramaMovie(5,"Good Will Hunting");
-        dramaMovieStorage.save(movie5);
+        DramaMovie dramaMovie5 = new DramaMovie(5,"Good Will Hunting");
+        dramaMovieStorage.save(dramaMovie5);
 
         // Action movies
         MovieStorage<ActionMovie> actionMovieStorage = new ActionMovieStorage(Path.of("data", "action-movies.json"));
