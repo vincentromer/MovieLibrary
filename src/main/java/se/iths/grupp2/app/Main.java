@@ -21,8 +21,14 @@ public class Main {
     static MovieStorage<DramaMovie> dramaMovieStorage;
     static MovieStorage<ActionMovie> actionMovieStorage;
     static MovieStorage<ComedyMovie> comedyMovieStorage;
+    static MovieStorage<HorrorMovie> horrorMovieStorage;
+
+    static MoviePrinter moviePrinter;
 
     static void main() throws IOException {
+
+        moviePrinter = new MoviePrinter();
+
         // region Movie creation
         // Drama movies
         dramaMovieStorage = new DramaMovieStorage(Path.of("data", "drama-movies.json"));
@@ -79,7 +85,7 @@ public class Main {
         comedyMovieStorage.save(comedyMovie5);
 
         //Horror movies
-        MovieStorage<HorrorMovie> horrorMovieStorage = new HorrorMovieStorage(Path.of("data", "horror.movies.json"));
+        horrorMovieStorage = new HorrorMovieStorage(Path.of("data", "horror-movies.json"));
 
         HorrorMovie horrorMovie1 = new HorrorMovie(1, "Suicide Club");
         horrorMovieStorage.save(horrorMovie1);
@@ -89,68 +95,75 @@ public class Main {
 
         HorrorMovie horrorMovie3 = new HorrorMovie(3, "The Lighthouse");
         horrorMovieStorage.save(horrorMovie3);
-        // endregion
-
-        boolean quit = false;
-
-        menuLoop:
-        while (!quit) {
-            IO.println("""
-                    1. Show movies from a certain category
-                    2. Show all movies
-                    0. Quit""");
-            String choice = IO.readln("Choice? ");
-            switch (choice.trim()) {
-                case "1": {
-                    MovieStorage<? extends Movie> movieStorage;
-                    IO.println("Categories: DRAMA, ACTION, COMEDY"); // Add horror later
-                    String category = IO.readln("Which category? ");
-
-                    movieStorage = getMovieStorage(category);
-                    if (movieStorage == null) continue menuLoop;
-
-                    for (Movie movie : movieStorage.findAll()) {
-                        if (movieStorage.findAll() == null) {
-                            IO.println("No movies found");
-                            break;
-                        }
-                        IO.print("ID: " + movie.getId());
-                        IO.println(" ["+movie.getTitle()+"]");
-
-                    }
-
-                    IO.readln("Press enter to continue");
-                    break;
-                }
-                case "2": {
-                    List<Movie> movies = new ArrayList<>();
-                    movies.addAll(dramaMovieStorage.findAll());
-                    movies.addAll(actionMovieStorage.findAll());
-                    movies.addAll(comedyMovieStorage.findAll());
-
-                    for (int i = 0; i < movies.size(); i++) {
-                        if (i % 5 == 0) IO.println(); // Print a new line for every fifth movie
-                        IO.print("ID: " + movies.get(i).getId());
-                        IO.print(" ["+movies.get(i).getTitle()+"]");
-                        IO.println(" (" + movies.get(i).category() + ")");
-                    }
-                    IO.readln("Press enter to continue");
-                    break;
-                }
-                case "0": {
-                    IO.println("Quitting...");
-                    System.exit(1);
-                    break;
-                }
-            }
-        }
-
 
         HorrorMovie horrorMovie4 = new HorrorMovie(4, "Session 9");
         horrorMovieStorage.save(horrorMovie4);
 
         HorrorMovie horrorMovie5 = new HorrorMovie(5, "Oculus");
         horrorMovieStorage.save(horrorMovie5);
+        // endregion
+
+        boolean quit = false;
+
+        menuLoop:
+        while (!quit) {
+            moviePrinter.printMenu("1. Show movies from a certain category",
+                    "2. Show all movies",
+                    "0. Quit");
+            String choice = moviePrinter.prompt("Choice? ");
+            switch (choice.trim()) {
+                case "1": {
+                    MovieStorage<? extends Movie> movieStorage;
+                    moviePrinter.print("Categories: DRAMA, ACTION, COMEDY, HORROR");
+                    String category = moviePrinter.prompt("Which category? ");
+
+                    movieStorage = getMovieStorage(category);
+                    if (movieStorage == null) continue menuLoop;
+
+                    for (Movie movie : movieStorage.findAll()) {
+                        if (movieStorage.findAll() == null || movieStorage.findAll().isEmpty()) {
+                            moviePrinter.prompt("No movies found");
+                            break;
+                        }
+                        moviePrinter.printMovieInfo(movie);
+                    }
+
+                    moviePrinter.prompt("Press enter to continue");
+                    break;
+                }
+                case "2": {
+                    List<Movie> movies = new ArrayList<>();
+                    try {
+                        movies.addAll(dramaMovieStorage.findAll());
+                        movies.addAll(actionMovieStorage.findAll());
+                        movies.addAll(comedyMovieStorage.findAll());
+                        movies.addAll(horrorMovieStorage.findAll());
+                    }
+                    catch (NullPointerException e) {
+                        moviePrinter.print("Could not access movies: " + e.getMessage());
+                        continue menuLoop;
+                    }
+
+                    for (int i = 0; i < movies.size(); i++) {
+                        if (i % 5 == 0) IO.println(); // Print a new line for every fifth movie
+                        Movie movie = movies.get(i);
+                        moviePrinter.printMovieInfo(movie);
+                    }
+                    moviePrinter.prompt("Press enter to continue");
+                    break;
+                }
+                case "0": {
+                    moviePrinter.print("Quitting...");
+                    System.exit(1);
+                    break;
+                }
+                default: {
+                    moviePrinter.print("Enter a valid entry");
+                    continue menuLoop;
+                }
+            }
+        }
+
     }
 
     private static MovieStorage<? extends Movie> getMovieStorage(String category) {
@@ -165,8 +178,11 @@ public class Main {
             case "COMEDY":
                 movieStorage = comedyMovieStorage;
                 break;
+            case "HORROR":
+                movieStorage = horrorMovieStorage;
+                break;
             default:
-                IO.println("Please enter a valid category");
+                moviePrinter.print("Please enter a valid category");
                 return null;
         }
         return movieStorage;
