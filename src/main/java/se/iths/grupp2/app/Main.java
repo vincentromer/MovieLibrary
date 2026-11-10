@@ -3,10 +3,12 @@ package se.iths.grupp2.app;
 import se.iths.grupp2.app.model.ActionMovie;
 import se.iths.grupp2.app.model.ComedyMovie;
 import se.iths.grupp2.app.model.DramaMovie;
+import se.iths.grupp2.app.model.HorrorMovie;
 import se.iths.grupp2.app.model.Movie;
 import se.iths.grupp2.app.storage.ActionMovieStorage;
 import se.iths.grupp2.app.storage.ComedyMovieStorage;
 import se.iths.grupp2.app.storage.DramaMovieStorage;
+import se.iths.grupp2.app.storage.HorrorMovieStorage;
 import se.iths.grupp2.app.storage.MovieStorage;
 
 import java.io.IOException;
@@ -76,6 +78,17 @@ public class Main {
         ComedyMovie comedyMovie5 = new ComedyMovie(5, "Bridesmaids");
         comedyMovieStorage.save(comedyMovie5);
 
+        //Horror movies
+        MovieStorage<HorrorMovie> horrorMovieStorage = new HorrorMovieStorage(Path.of("data", "horror.movies.json"));
+
+        HorrorMovie horrorMovie1 = new HorrorMovie(1, "Suicide Club");
+        horrorMovieStorage.save(horrorMovie1);
+
+        HorrorMovie horrorMovie2 = new HorrorMovie(2, "Exit 8");
+        horrorMovieStorage.save(horrorMovie2);
+
+        HorrorMovie horrorMovie3 = new HorrorMovie(3, "The Lighthouse");
+        horrorMovieStorage.save(horrorMovie3);
         // endregion
 
         boolean quit = false;
@@ -133,6 +146,11 @@ public class Main {
         }
 
 
+        HorrorMovie horrorMovie4 = new HorrorMovie(4, "Session 9");
+        horrorMovieStorage.save(horrorMovie4);
+
+        HorrorMovie horrorMovie5 = new HorrorMovie(5, "Oculus");
+        horrorMovieStorage.save(horrorMovie5);
     }
 
     private static MovieStorage<? extends Movie> getMovieStorage(String category) {
