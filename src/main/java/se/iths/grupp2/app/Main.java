@@ -158,7 +158,7 @@ public class Main {
                 }
                 case "0": {
                     moviePrinter.print("Quitting...");
-                    System.exit(1);
+                    quit = true;
                     break;
                 }
                 default: {
