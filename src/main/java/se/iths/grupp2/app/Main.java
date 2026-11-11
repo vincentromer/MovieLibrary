@@ -71,7 +71,7 @@ public class Main {
         comedyMovieStorage.save(comedyMovie5);
 
         //Horror movies
-        MovieStorage<HorrorMovie> horrorMovieStorage = new HorrorMovieStorage(Path.of("data", "horror.movies.json"));
+        MovieStorage<HorrorMovie> horrorMovieStorage = new HorrorMovieStorage(Path.of("data", "horror-movies.json"));
 
         HorrorMovie horrorMovie1 = new HorrorMovie(1, "Suicide Club");
         horrorMovieStorage.save(horrorMovie1);
