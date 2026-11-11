@@ -144,12 +144,16 @@ public class Main {
                         continue menuLoop;
                     }
 
-                    for (int i = 0; i < movies.size(); i++) {
-                        if (i % 5 == 0) IO.println(); // Print a new line for every fifth movie
-                        Movie movie = movies.get(i);
+                    String lastCategory = "";
+                    for (Movie movie : movies) {
+                        if (!movie.category().equals(lastCategory)) {
+                            // Print a new line if this movie is not the same category as the last
+                            moviePrinter.print("");
+                        }
                         moviePrinter.printMovieInfo(movie);
+                        lastCategory = movie.category();
                     }
-                    moviePrinter.prompt("Press enter to continue");
+                    moviePrinter.prompt("\nPress enter to continue");
                     break;
                 }
                 case "0": {
