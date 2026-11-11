@@ -1,4 +1,4 @@
-package se.iths.grupp2.app;
+package se.iths.grupp2.app.ui;
 
 import se.iths.grupp2.app.model.Movie;
 
@@ -6,10 +6,6 @@ public class MoviePrinter {
 
     public void print(String message) {
         IO.println(message);
-    }
-
-    public String prompt(String prompt) {
-        return IO.readln(prompt);
     }
 
     public void printMenu(String... menuItems) {
