@@ -41,7 +41,7 @@ public class MovieMenu {
             switch (choice.trim()) {
                 case "1": {
                     MovieStorage<? extends Movie> movieStorage;
-                    moviePrinter.print("Categories: DRAMA, ACTION, COMEDY, HORROR");
+                    moviePrinter.printCategories();
                     String category = IO.readln("Which category? ");
 
                     movieStorage = getMovieStorage(category);
@@ -53,16 +53,18 @@ public class MovieMenu {
                         if (movies.isEmpty()) {
                             moviePrinter.print("No movies found");
                         } else {
+                            moviePrinter.printMovieHeader(category);
+                            moviePrinter.printMovieColumns();
+
                             for (Movie movie : movies) {
                                 moviePrinter.printMovieInfo(movie);
                             }
                         }
                     } catch (IOException e) {
-                        moviePrinter.print("Could not access movies: " + e.getMessage());
-                        continue menuLoop;
+                        moviePrinter.printError("Could not access movies: " + e.getMessage());                        continue menuLoop;
                     }
 
-                    IO.readln("Press enter to continue");
+                    IO.readln("\nPress enter to continue");
                     break;
                 }
                 case "2": {
@@ -73,29 +75,36 @@ public class MovieMenu {
                         movies.addAll(comedyStorage.findAll());
                         movies.addAll(horrorStorage.findAll());
                     } catch (IOException e) {
-                        moviePrinter.print("Could not access movies: " + e.getMessage());
-                        continue menuLoop;
+                        moviePrinter.printError("Could not access movies: " + e.getMessage());                        continue menuLoop;
                     }
 
-                    String lastCategory = "";
-                    for (Movie movie : movies) {
-                        if (!movie.category().equals(lastCategory)) {
-                            // Print a new line if this movie is not the same category as the last
-                            moviePrinter.print("");
+                    if (movies.isEmpty()) {
+                        moviePrinter.print("No movies found");
+                    } else {
+                        moviePrinter.printMovieHeader("ALL");
+
+                        String lastCategory = "";
+
+                        for (Movie movie : movies) {
+                            if (!movie.category().equals(lastCategory)) {
+                                moviePrinter.printCategorySection(movie.category());
+                            }
+
+                            moviePrinter.printMovieInfo(movie);
+                            lastCategory = movie.category();
                         }
-                        moviePrinter.printMovieInfo(movie);
-                        lastCategory = movie.category();
+                        moviePrinter.printMovieTotal(movies.size());
                     }
                     IO.readln("\nPress enter to continue");
                     break;
                 }
                 case "0": {
-                    moviePrinter.print("Quitting...");
+                    moviePrinter.printGoodbye();
                     quit = true;
                     break;
                 }
                 default: {
-                    moviePrinter.print("Enter a valid entry");
+                    moviePrinter.printError("Enter a valid entry");
                     continue menuLoop;
                 }
             }
@@ -118,7 +127,7 @@ public class MovieMenu {
                 movieStorage = horrorStorage;
                 break;
             default:
-                moviePrinter.print("Please enter a valid category");
+                moviePrinter.printError("Please enter a valid category");
                 return null;
         }
         return movieStorage;

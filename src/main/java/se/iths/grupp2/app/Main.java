@@ -10,6 +10,7 @@ import se.iths.grupp2.app.storage.DramaMovieStorage;
 import se.iths.grupp2.app.storage.HorrorMovieStorage;
 import se.iths.grupp2.app.storage.MovieStorage;
 import se.iths.grupp2.app.service.MovieSeeder;
+import se.iths.grupp2.app.ui.Ansi;
 import se.iths.grupp2.app.ui.MovieMenu;
 import se.iths.grupp2.app.ui.MoviePrinter;
 
@@ -43,18 +44,19 @@ public class Main {
                     comedyMovieStorage,
                     horrorMovieStorage
             );
-
-        } catch (IOException e){
-            moviePrinter.print("Could not initialize movie library: " + e.getMessage());
-            return;
         }
-        MovieMenu movieMenu = new MovieMenu(
-                dramaMovieStorage,
-                actionMovieStorage,
-                comedyMovieStorage,
-                horrorMovieStorage,
-                moviePrinter);
-       movieMenu.run();
+        catch(IOException e) {
+                moviePrinter.printError("Could not initialize movie library: " + e.getMessage());
+                return;
+            }
+            MovieMenu movieMenu = new MovieMenu(
+                    dramaMovieStorage,
+                    actionMovieStorage,
+                    comedyMovieStorage,
+                    horrorMovieStorage,
+                    moviePrinter);
+
+            movieMenu.run();
         }
 
     }

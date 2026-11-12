@@ -82,5 +82,13 @@ public class MovieSeeder {
         HorrorMovie horrorMovie5 = new HorrorMovie(5, "Oculus");
         horrorStorage.save(horrorMovie5);
         // endregion
+
+
+
+        // Additional movies for test after refactoring
+        dramaStorage.save(new DramaMovie(6, "The Pursuit of Happyness"));
+        actionStorage.save(new ActionMovie(6, "Mad Max: Fury Road"));
+        comedyStorage.save(new ComedyMovie(6, "Mean Girls"));
+        horrorStorage.save(new HorrorMovie(6, "The Conjuring"));
     }
 }
