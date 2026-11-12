@@ -42,10 +42,14 @@ public class MovieMenu {
                 case "1": {
                     MovieStorage<? extends Movie> movieStorage;
                     moviePrinter.printCategories();
-                    String category = IO.readln("Which category? ");
+                    String category = "";
 
-                    movieStorage = getMovieStorage(category);
-                    if (movieStorage == null) continue menuLoop;
+                    while (true) {
+                        category = IO.readln("Which category? ");
+                        movieStorage = getMovieStorage(category);
+                        if (movieStorage == null) continue;
+                        break;
+                    }
 
                     try {
                         List<? extends Movie> movies = movieStorage.findAll();
